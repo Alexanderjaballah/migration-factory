@@ -1,0 +1,43 @@
+# Unpopulated result template. Replace null values only with observed or
+# explicitly estimated workload results.
+workload: null
+recorded_at: null
+
+execution:
+  workload_status: null
+  current_lifecycle_state: null
+  total_agent_runtime_seconds: null
+  retries: null
+  agent_sessions: null
+
+quality:
+  build_result: null
+  tests:
+    passed: null
+    failed: null
+  independent_review_result: null
+  findings:
+    p0: null
+    p1: null
+    p2: null
+  pr_result: null
+
+human_involvement:
+  approval_gates: null
+  execution_interventions:
+    count: null
+    reasons: []
+
+economics:
+  estimated_manual_engineering_hours: null
+  autonomous_execution_seconds: null
+  agent_cost:
+    amount: null
+    currency: null
+  cost_per_successful_migration: null
+  estimated_engineering_hours_released: null
+
+success_evidence:
+  remote_ci_passed: null
+  promotion_gate_result: null
+  successful: null

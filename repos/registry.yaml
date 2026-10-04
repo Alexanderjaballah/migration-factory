@@ -1,0 +1,22 @@
+# Workload registry schema:
+# Each workload tracks its repository, Java migration target, complexity, risk,
+# readiness scores, and lifecycle status.
+workloads:
+  service-a:
+    repository: git@github.com:Alexanderjaballah/spring-boot-example.git
+    current_java: 17
+    target_java: 21
+    complexity: low
+    risk: medium
+    status: ready_for_human_merge
+    readiness_baseline: 26.4
+    readiness_after: 29.2
+
+  service-b:
+    repository: git@github.com:Alexanderjaballah/tenantflow-saas-api.git
+    current_java: 17
+    target_java: 21
+    complexity: medium
+    risk: medium
+    status: readiness_assessed
+    readiness_baseline: 32.4
