@@ -6,9 +6,11 @@ Design and deliver the bounded migration of `service-b` from Java 17 to Java
 21, with evidence sufficient for independent review and the factory promotion
 gate.
 
-This document is a plan only. No task has been executed, no repository has
-been cloned, no Factory or Droid session has been started, and Service B has
-not been modified.
+This document is a plan only. At authoring time (2026-10-04, when first
+drafted), no task had been executed, no repository had been cloned, no
+Factory or Droid session had been started, and Service B had not been
+modified; readiness has since been verified — see `metrics/` readiness
+evidence.
 
 ## Governing Inputs
 
@@ -189,7 +191,12 @@ configuration, or CI configuration.
   configuration, authentication/authorization code, dependency evidence,
   interface definitions, and security tests.
 - **Complexity:** `C4` — Cross-component.
-- **Risk:** High because authentication impact is in scope for analysis.
+- **Risk:** Medium — read-only analysis only. Escalates to High
+  automatically if any authentication, schema/data, destructive database,
+  or production-infrastructure IMPLEMENTATION change becomes required.
+- **Note:** Reclassification from High to Medium (read-only scope)
+  human-approved on 2026-10-05; High controls re-apply immediately if the
+  read-only boundary is crossed.
 - **Recommended model class:** `frontier_reasoning`.
 - **Required inputs/context:** T01 inventory, approved threat model or security
   requirements, authentication flows, security advisories, and dependency
@@ -215,7 +222,12 @@ configuration, or CI configuration.
   configuration, database dependencies, schema definitions, Flyway
   configuration and migrations, and database tests.
 - **Complexity:** `C4` — Cross-component.
-- **Risk:** High because schema/data migration impact is in scope for analysis.
+- **Risk:** Medium — read-only analysis only. Escalates to High
+  automatically if any authentication, schema/data, destructive database,
+  or production-infrastructure IMPLEMENTATION change becomes required.
+- **Note:** Reclassification from High to Medium (read-only scope)
+  human-approved on 2026-10-05; High controls re-apply immediately if the
+  read-only boundary is crossed.
 - **Recommended model class:** `frontier_reasoning`.
 - **Required inputs/context:** T01 inventory, supported database versions,
   migration history, driver/Flyway compatibility evidence, rollback
@@ -472,9 +484,11 @@ configuration, or CI configuration.
 
 ### T16 — Metrics and Human-Merge Handoff
 
-- **Objective:** Record observed mission results and prepare the
+- **Objective:** Record observed mission results after every promotion-gate
+  decision and, for `PROMOTE` or `PROMOTE_WITH_CONDITIONS`, prepare the
   `ready_for_human_merge` handoff without merging.
-- **Dependencies:** T15 with `PROMOTE` or `PROMOTE_WITH_CONDITIONS`.
+- **Dependencies:** T15 with any promotion decision: `PROMOTE`,
+  `PROMOTE_WITH_CONDITIONS`, or `DO_NOT_PROMOTE`.
 - **Parallel:** No.
 - **Expected files/components affected:** Factory workload result and evidence
   records only; no Service B modification.
@@ -488,7 +502,11 @@ configuration, or CI configuration.
 - **Required output/evidence:** Workload status and lifecycle state, total
   agent runtime, retries, session count, quality results, finding counts,
   approval/intervention records, and available economics fields. Estimates
-  must be labeled; unavailable values remain unavailable.
+  must be labeled; unavailable values remain unavailable. A
+  `DO_NOT_PROMOTE` outcome must still produce the workload result record,
+  including the failure decision, its reasons, and the metrics — the
+  factory measures failures too. On `DO_NOT_PROMOTE` there is no merge
+  handoff and the workload terminates at `promotion_gate`.
 - **Failure/escalation:** Missing observed data remains unavailable and must
   not be invented. Inconsistent success evidence returns to T15. Metrics
   definition disputes escalate to the factory owner.
